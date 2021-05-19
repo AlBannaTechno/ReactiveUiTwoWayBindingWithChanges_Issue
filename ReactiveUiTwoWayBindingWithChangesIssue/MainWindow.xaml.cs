@@ -38,7 +38,7 @@ namespace ReactiveUiTwoWayBindingWithChangesIssue
 
     public class MainWindowViewModel : ReactiveObject
     {
-        [Reactive] public DatabaseServices DatabaseServices { get; private set; }
+        [Reactive] public IDatabaseServices DatabaseServices { get; private set; }
 
         public MainWindowViewModel()
         {
@@ -46,9 +46,16 @@ namespace ReactiveUiTwoWayBindingWithChangesIssue
         }
     }
 
-    public class DatabaseServices : ReactiveObject
+
+    // make this IDatabaseServices : IReactiveObject, to make the system work
+    public interface IDatabaseServices
     {
-        [Reactive] public DatabaseSettings DatabaseSettings { get; private set; }
+        DatabaseSettings DatabaseSettings { get; set; }
+    }
+    
+    public class DatabaseServices : ReactiveObject, IDatabaseServices
+    {
+        [Reactive] public DatabaseSettings DatabaseSettings { get; set; }
 
         public DatabaseServices()
         {

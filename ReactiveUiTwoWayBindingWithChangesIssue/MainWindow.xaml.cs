@@ -22,14 +22,15 @@ namespace ReactiveUiTwoWayBindingWithChangesIssue
             {
                 this.Bind(ViewModel, vm => vm.DatabaseServices.Name, v => v.Username.Text)
                     .DisposeWith(d);
-                
-                this.ViewModel.WhenPropertyChanged(vm => vm.DatabaseServices.Name, false)
+
+                // WhenPropertyChanged is not a ReactiveUi extension method. WhenAnyValue is
+                this.WhenAnyValue(v => v.ViewModel.DatabaseServices.Name)
                     .Subscribe(_ =>
                     {
                         
-                    }).DisposeWith(d);
+                    });
+            
             });
-
         }
     }
 
